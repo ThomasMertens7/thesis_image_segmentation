@@ -1,0 +1,34 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'matrix-geometric-mean-image-segmentation'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Robbe
+    family-names: Ramon
+    affiliation: KU Leuven
+  - given-names: Raf
+    family-names: Vandebril
+    email: raf.vandebril@kuleuven.be
+    affiliation: KU Leuven
+    orcid: 'https://orcid.org/0000-0003-2119-8696'
+  - given-names: Wannes
+    family-names: Meert
+    email: wannes.meert@kuleuven.be
+    affiliation: KU Leuven
+    orcid: 'https://orcid.org/0000-0001-9560-3872'
+repository-code: >-
+  https://github.com/thesis-robbe-ramon-2023/matrix-geometric-mean-image-segmentation
+abstract: >-
+  A Python package to calculate the matrix geometric mean
+  and perform image segmentation using the matrix geometric
+  mean and level set evolution.
+keywords:
+  - image segmentation
+  - matrix geometric mean
+  - level set evolution
+license: MIT
