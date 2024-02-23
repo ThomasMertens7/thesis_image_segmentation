@@ -25,7 +25,7 @@ from figure.show_figure import show_all, show_lsf, show_contour
 
 
 def main():
-    img = cv2.imread("img/duck.jpeg")
+    img = cv2.imread("../img/duck.jpeg")
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     original_img = img

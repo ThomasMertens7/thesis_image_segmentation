@@ -1,27 +1,7 @@
-"""
-This Python package is written in the context of the Master's thesis of Robbe Ramon, KU Leuven.
-
-Inspired from the following references:
-
-    [1] Y. Rathi, A. Tannenbaum and O. Michailovich, "Segmenting Images on the Tensor Manifold," 2007 IEEE Conference on
-    Computer Vision and Pattern Recognition, Minneapolis, MN, USA, 2007, pp. 1-8, doi: 10.1109/CVPR.2007.383010.
-
-    [2] C. Li, C. Xu, C. Gui and M. D. Fox, "Distance Regularized Level Set Evolution and Its Application to Image
-    Segmentation," in IEEE Transactions on Image Processing, vol. 19, no. 12, pp. 3243-3254, Dec. 2010,
-    doi: 10.1109/TIP.2010.2069690.
-
-    [3] Bini, D.A., Iannazzo, B. A note on computing matrix geometric means. Advances in Computational Mathematics 35,
-    175–192 (2011). https://doi.org/10.1007/s10444-010-9165-0
-
-Author: Robbe Ramon
-Released under MIT license
-"""
-
 import cv2
 from geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, EdgeIndicator, construct_g
 from figure.show_figure import show_all, show_lsf, show_contour
 from segmentrecognition.image_recognition_recognize import recognize_animal
-from cut_segment.cut_segment import cut_image
 
 
 def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbda, alfa, epsilon, sigma, potential_function, edge_indicator, amount_of_points):
@@ -81,10 +61,7 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
         try:
             n = n + 1
             phi = next(seg)
-            print(len(phi))
-            print(len(phi[0]))
-            print("Phi0: ", phi[0])
-            print("Phi1: ", phi[1])
+            print("Phi: ", phi)
             print("Original Image", original_img)
             if n == 1:
                 show_lsf(phi)
@@ -92,10 +69,9 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
             else:
                 show_all(phi, original_img)
         except StopIteration:
-            # new_img_path = cut_image(phi, img_path)
             recognize_animal(img_path)
             break
 
 
 if __name__ == "__main__":
-    execute("../img/butterfly-3.jpeg", [tuple([80, 265, 80, 250])], 15, 35, 2, 4, 1.5, 1, PotentialFunction.DOUBLE_WELL, EdgeIndicator.GEODESIC_DISTANCE, 100)
+    execute("../img/cow-3.jpeg", [tuple([10, 110, 20, 100])], 15, 35, 2, 4, 1.5, 1, PotentialFunction.DOUBLE_WELL, EdgeIndicator.GEODESIC_DISTANCE, 100)

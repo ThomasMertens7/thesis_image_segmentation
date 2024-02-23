@@ -261,6 +261,7 @@ def _construct_tensor_manifold_greyscale(image: np.ndarray):
 def _initialize_lsf(initial_contours_coordinates: [tuple[int, int, int, int]],
                     image: np.ndarray):
     c0 = 2
+    print("Shape: " + str(image.shape[:2]))
     initial_lsf = c0 * np.ones(image.shape[:2])
 
     for contour in initial_contours_coordinates:

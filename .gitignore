@@ -311,4 +311,8 @@ pyrightconfig.json
 .history
 .ionide
 
+saved_model/
+
+
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm,visualstudiocode
+
