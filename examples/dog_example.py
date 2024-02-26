@@ -1,5 +1,6 @@
 import json
 
+import numpy as np
 import cv2
 from geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, EdgeIndicator, construct_g
 from figure.show_figure import show_all, show_lsf, show_contour
@@ -69,12 +70,17 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
             else:
                 show_all(phi, original_img)
         except StopIteration:
+            return_contour = convert_to_0_1(phi.tolist())
+            return_contour_npy = np.array(return_contour)
+            np.save('../try_out_segment_algorithms/array_data2.npy', return_contour_npy)
+            #np.savetxt('../try_out_segment_algorithms/array_data2.csv', return_contour_npy, delimiter=',')
+
             with open('./contours.json', 'w') as f:
-                json.dump(convert_to_0_1(phi.tolist()), f)
+                json.dump(return_contour, f)
             recognize_animal(img_path)
             while True:
                 a = 0
 
 
 if __name__ == "__main__":
-    execute("../database/all_imgs/dog-21.jpeg", get_initial_contour("../database/all_imgs/dog-21.jpeg"), 15, 30, 4, 6, 1.5, 2.5, PotentialFunction.DOUBLE_WELL, EdgeIndicator.GEODESIC_DISTANCE, 100)
+    execute("../database/all_imgs/dog-1.jpeg", [[28, 206, 144, 256]], 15, 30, 0.5, 2.0, 1.5, 3, PotentialFunction.DOUBLE_WELL, EdgeIndicator.SCALAR_DIFFERENCE, 100)
