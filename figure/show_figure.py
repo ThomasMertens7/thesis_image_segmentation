@@ -57,7 +57,7 @@ def show_fig2_grey(phi: np.ndarray, img: np.ndarray):
         ax2.plot(contour[:, 1], contour[:, 0], linewidth=2)
 
 
-def show_all(phi: np.ndarray, img: np.ndarray, pause=0.03):
+def show_all(phi: np.ndarray, img: np.ndarray, pause=10):
     show_contour(phi, img)
     show_lsf(phi)
     plt.pause(pause)

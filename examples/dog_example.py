@@ -1,5 +1,5 @@
 import json
-
+import time
 import numpy as np
 import cv2
 from geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, EdgeIndicator, construct_g
@@ -60,16 +60,21 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
     # )
 
     n = 0
+    phi = None
+    last_phi = None
     while True:
+
         try:
             n = n + 1
+            before_last_phi = last_phi
+            last_phi = phi
             phi = next(seg)
-            if n == 1:
-                show_lsf(phi)
-                show_contour(phi, original_img)
-            else:
-                show_all(phi, original_img)
+
         except StopIteration:
+            show_lsf(before_last_phi)
+            show_contour(before_last_phi, original_img)
+            show_all(phi, original_img)
+
             return_contour = convert_to_0_1(phi.tolist())
             return_contour_npy = np.array(return_contour)
             np.save('../try_out_segment_algorithms/array_data2.npy', return_contour_npy)
@@ -83,4 +88,4 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
 
 if __name__ == "__main__":
-    execute("../database/all_imgs/dog-1.jpeg", [[28, 206, 144, 256]], 15, 30, 0.5, 2.0, 1.5, 3, PotentialFunction.DOUBLE_WELL, EdgeIndicator.SCALAR_DIFFERENCE, 100)
+        execute("../database/all_imgs/horse-50.jpeg", [[64, 399, 249, 532]], 15, 30, 1.875, 6.875, 1.5, 6.875, PotentialFunction.DOUBLE_WELL, EdgeIndicator.EUCLIDEAN_DISTANCE, 100)

@@ -138,6 +138,6 @@ def parameter_search(file_name, level=0):
 
 
 
-for index in range(1, 31):
+for index in range(50, 51):
     print(index)
-    parameter_search("cow-" + str(index), 0)
+    parameter_search("horse-" + str(index), 0)

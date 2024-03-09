@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
 
-name = "cow-11"
+name = "horse-40"
 nb = 1
 
 

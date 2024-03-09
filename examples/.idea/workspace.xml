@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="07763ccf-f15a-4997-987b-0ed274698c86" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../database/data.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../database/database_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../latest_data.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../parameter_selection_model/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../parameter_selection_model/training_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/array_data2.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-31.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-32.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-33.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-34.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-35.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-36.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-37.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-38.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-39.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-40.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-41.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-42.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-43.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-44.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-45.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-46.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-47.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-48.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-49.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/cow-50.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/data.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-1.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-10.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-11.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-12.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-13.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-14.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-15.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-16.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-17.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-18.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-19.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-2.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-20.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-21.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-22.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-23.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-24.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-25.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-26.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-27.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-28.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-29.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-3.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-30.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-31.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-32.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-33.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-34.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-35.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-36.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-37.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-38.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-39.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-4.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-40.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-41.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-42.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-43.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-44.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-45.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-46.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-47.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-48.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-5.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-6.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-7.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-8.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/horse-9.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-1.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-10.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-11.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-12.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-13.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-14.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-15.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-16.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-17.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-18.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-19.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-2.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-20.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-21.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-22.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-23.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-24.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-25.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-26.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-27.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-28.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-29.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-3.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-30.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-31.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-32.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-33.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-34.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-35.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-36.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-37.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-38.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-39.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-4.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-40.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-41.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-42.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-43.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-44.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-45.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-46.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-47.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-48.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-49.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-5.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-50.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-6.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-7.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-8.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/sheep-9.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/txt_to_excel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/cow-36.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/cow-36.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/cow-38.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/cow-38.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/cow-47.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/cow-47.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/cow-48.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/cow-48.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-12.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-12.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-2.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-2.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-35.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-35.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-38.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-38.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-40.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-40.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/horse-7.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/horse-7.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/sheep-1.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/sheep-1.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/sheep-11.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/sheep-11.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/sheep-15.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/sheep-15.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../database/all_imgs/sheep-33.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/../database/all_imgs/sheep-33.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contours.json" beforeDir="false" afterPath="$PROJECT_DIR$/contours.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dog_example.py" beforeDir="false" afterPath="$PROJECT_DIR$/dog_example.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../figure/show_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/../figure/show_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../try_out_segment_algorithms/iterate_parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/iterate_parameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../try_out_segment_algorithms/maskformer-swin-base-ade.py" beforeDir="false" afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/maskformer-swin-base-ade.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../try_out_segment_algorithms/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/results.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../try_out_segment_algorithms/segmented.npy" beforeDir="false" afterPath="$PROJECT_DIR$/../try_out_segment_algorithms/segmented.npy" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2dJhNnnt7Up0AsSJk5i9wrg9YXw" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/thomasmertens/Desktop/thesis/git_code/examples"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07763ccf-f15a-4997-987b-0ed274698c86" name="Changes" comment="" />
+      <created>1709732050411</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709732050411</updated>
+    </task>
+    <servers />
+  </component>
+</project>
