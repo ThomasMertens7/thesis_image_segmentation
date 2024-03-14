@@ -28,6 +28,7 @@ from scipy.linalg import eigh
 import cv2
 
 
+
 class PotentialFunction(Enum):
     SINGLE_WELL = 0
     DOUBLE_WELL = 1
