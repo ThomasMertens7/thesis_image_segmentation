@@ -89,6 +89,7 @@ def parameter_search(file_name, level=0):
                     level = 2
 
                 diffs[5] = int(diffs[5] / 2)
+                print("Amount of points: " + str(amount_of_points))
 
         # Determine optimal value of alpha
         elif level == 2:
@@ -119,6 +120,8 @@ def parameter_search(file_name, level=0):
 
             diffs[0] = diffs[0] / 2
 
+            print("Alpha: " + str(alpha))
+
         # Determine optimal value of sigma
         elif level == 3:
             if diffs[1] is None:
@@ -148,11 +151,13 @@ def parameter_search(file_name, level=0):
 
             diffs[1] = diffs[1] / 2
 
+            print("Sigma: " + str(sigma))
+
         # Determine optimal value of outer_iter
         elif level == 4:
             if diffs[2] is None:
                 outer_iter = 30
-                diffs[2] = 15
+                diffs[2] = 16
 
             execute(path, bounding_box, 15, outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
@@ -172,24 +177,27 @@ def parameter_search(file_name, level=0):
             else:
                 outer_iter = outer_iter - diffs[2]
 
-            if diffs[2] <= 3.75:
+            if diffs[2] <= 4:
                 level = 5
 
             diffs[2] = int(diffs[2] / 2)
+
+            print("Outer iter: " + str(outer_iter))
+
 
         # Determine optimal value of inner_iter
         elif level == 5:
             if diffs[3] is None:
                 inner_iter = 15
-                diffs[3] = 7.5
+                diffs[3] = 8
 
-            execute(path, bounding_box, 15, outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
+            execute(path, bounding_box, inner_iter, outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec1 = hamming_distance(file_name + ".npy", "segmented.npy")
-            execute(path, bounding_box, 15 + diffs[3], outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
+            execute(path, bounding_box, int(inner_iter + diffs[3]), outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec2 = hamming_distance(file_name + ".npy", "segmented.npy")
-            execute(path, bounding_box, 15 - diffs[3], outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
+            execute(path, bounding_box, int(inner_iter - diffs[3]), outer_iter, 3, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec3 = hamming_distance(file_name + ".npy", "segmented.npy")
             highest_prec = max(highest_prec, prec1, prec2, prec3)
@@ -200,10 +208,12 @@ def parameter_search(file_name, level=0):
                 outer_iter = outer_iter + diffs[3]
             else:
                 outer_iter = outer_iter - diffs[3]
-            if diffs[3] <= 1.875:
+            if diffs[3] <= 2:
                 level = 6
 
             diffs[3] = int(diffs[3] / 2)
+
+            print("Inner_iter: " + str(inner_iter))
 
         # Determine optimal value of lambda
         elif level == 6:
@@ -233,6 +243,8 @@ def parameter_search(file_name, level=0):
                 level = 7
 
             diffs[2] = diffs[2] / 2
+
+            print("Lambda: " + str(lmbda))
 
         else:
             with open('results.txt', 'a') as file:
