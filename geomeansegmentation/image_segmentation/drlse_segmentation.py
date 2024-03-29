@@ -39,6 +39,14 @@ class EdgeIndicator(Enum):
     SCALAR_DIFFERENCE = 1
     EUCLIDEAN_DISTANCE = 2
 
+    def __str__(self):
+        return f"EdgeIndicator.{self.name}"
+
+    @staticmethod
+    def from_string(s):
+        _, member = s.split(".")
+        return EdgeIndicator[member]
+
 
 def perform_segmentation(
         image: np.ndarray,

@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
 
-name = "horse-40"
+name = "dog-1"
 nb = 1
 
 
@@ -80,7 +80,7 @@ color_mapping = {
     2: (0, 255, 0),       # Class 2 is green
     3: (0, 0, 255),       # Class 3 is blue
     4: (255, 255, 0),     # Class 4 is yellow
-    5: (255, 255, 255),   # Class 5 is white
+    5: (128, 0, 128),   # Class 5 is white
     6: (0, 255, 255),     # Class 6 is cyan
     7: (128, 0, 0),       # Class 7 is maroon
     8: (0, 128, 0),       # Class 8 is dark green
@@ -106,6 +106,7 @@ pil_image = Image.fromarray(image)
 
 # Composite the background and foreground images with transparency
 blended_image = Image.blend(input_image, pil_image, 0.3)
+blended_image.save("blended_image.png")
 
 # Show the composite image
 blended_image.show()

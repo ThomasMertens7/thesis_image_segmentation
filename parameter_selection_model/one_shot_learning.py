@@ -1,8 +1,12 @@
+from sklearn.model_selection import KFold
 from transformers import AutoImageProcessor, ViTMSNModel
 import torch
-from PIL import Image
-from preprocessing import  preprocessing_with_animal
+from preprocessing import preprocessing_with_animal
 import numpy as np
+from sklearn.metrics import mean_squared_error
+import time
+
+t1 = time.time()
 
 
 def euclidean_distance(matrix1, matrix2):
@@ -18,8 +22,8 @@ def euclidean_distance(matrix1, matrix2):
     return euclidean_dist
 
 
-image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
-model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
+image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
+model = ViTMSNModel.from_pretrained("facebook/vit-msn-base")
 
 df = preprocessing_with_animal()
 
@@ -34,28 +38,54 @@ for i, row in df.iterrows():
     hidden_representations.append(last_hidden_states)
 
 df['image'] = hidden_representations
-print(df.head)
 
-train_data = df.iloc[:60]
-test_data = df.iloc[61:69]
+kf = KFold(n_splits=10, shuffle=True)
+total_mse = list()
 
-for i1, row1 in test_data.iterrows():
-    min_distance = float('inf')
-    best_index = None
-    best_animal = None
-    best_parameters = None
+for train_index, val_index in kf.split(df):
+    train_data = df.iloc[train_index]
+    test_data = df.iloc[val_index]
 
-    for i2, row2 in train_data.iterrows():
-        curr_distance = euclidean_distance(row1["image"][0], row2["image"][0])
+    for i1, row1 in test_data.iterrows():
+        min_distance = float('inf')
+        best_index = None
+        best_animal = None
+        predicted_parameters = None
 
-        if curr_distance < min_distance:
-            min_distance = curr_distance
-            best_index = i2
-            best_animal = row2['animal']
-            best_parameters = row2[['edge_indicator', 'alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations']]
+        for i2, row2 in train_data.iterrows():
+            curr_distance = euclidean_distance(row1["image"][0], row2["image"][0])
 
-    print("For index 1: " + row1['animal'] + ", it matches best for parameters" + str(best_parameters))
+            if curr_distance < min_distance:
+                min_distance = curr_distance
+                best_index = i2
+                best_animal = row2['animal']
+                predicted_parameters = row2[['edge_indicator', 'alpha', 'sigma', 'lambda', 'inner_iterations',
+                                             'outer_iterations']]
 
+        predicted_parameters["GEODESIC_DISTANCE"] = 1 if \
+            (predicted_parameters['edge_indicator'] == "EdgeIndicator.GEODESIC_DISTANCE") else 0
+        predicted_parameters["EUCLIDEAN_DISTANCE"] = 1 if \
+            (predicted_parameters['edge_indicator'] == "EdgeIndicator.EUCLIDEAN_DISTANCE") else 0
+        predicted_parameters["SCALAR_DIFFERENCE"] = 1 if \
+            (predicted_parameters['edge_indicator'] == "EdgeIndicator.SCALAR_DIFFERENCE") else 0
+        predicted_parameters = predicted_parameters[
+            ['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE', 'alpha',
+             'sigma', 'lambda', 'outer_iterations', 'inner_iterations']]
+
+        row1["GEODESIC_DISTANCE"] = 1 if (row1['edge_indicator'] == "EdgeIndicator.GEODESIC_DISTANCE") else 0
+        row1["EUCLIDEAN_DISTANCE"] = 1 if (row1['edge_indicator'] == "EdgeIndicator.EUCLIDEAN_DISTANCE") else 0
+        row1["SCALAR_DIFFERENCE"] = 1 if (row1['edge_indicator'] == "EdgeIndicator.SCALAR_DIFFERENCE") else 0
+        actual_parameters = row1[
+            ['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE', 'alpha',
+             'sigma', 'lambda', 'outer_iterations', 'inner_iterations']]
+        mse = mean_squared_error(predicted_parameters, actual_parameters)
+        total_mse.append(mse)
+
+t2 = time.time()
+
+print(sum(total_mse) / len(total_mse))
+print(np.var(total_mse))
+print(t2-t1)
 
 
 

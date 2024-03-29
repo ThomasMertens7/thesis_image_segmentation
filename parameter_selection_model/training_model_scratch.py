@@ -1,20 +1,14 @@
-import pandas as pd
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader, TensorDataset
 import torch
-from PIL import Image
 from torchvision import transforms
 from sklearn.model_selection import KFold
-from sklearn.preprocessing import MinMaxScaler
 from preprocessing import preprocessing
-
-# Define your custom neural network architecture
-# Should I fine tune a model or define a neural network from scratch here?
-# Should then all images have the same size here?
-
+import numpy as np
 import torch.nn.functional as F
+from sklearn.metrics import mean_squared_error
 
 
 class CNNModel(nn.Module):
@@ -28,7 +22,7 @@ class CNNModel(nn.Module):
 
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.fc1 = nn.Linear(128 * 40 * 40, 512)
+        self.fc1 = nn.Linear(64 * 80 * 80, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 128)
         self.fc4 = nn.Linear(128, 8)
@@ -50,13 +44,15 @@ class CNNModel(nn.Module):
         # 160 x 160 x 64
         x = self.pool(x)
         # 80 x 80 x 64
+        """
         x = F.relu(self.conv4(x))  # New convolutional layer
         # 80 x 80 x 128
         x = self.pool(x)
         # 40 x 40 x 128
+        """
 
         # Reshapes to long vector
-        x = x.view(-1, 128 * 40 * 40)
+        x = x.view(-1, 64 * 80 * 80)
 
         x = F.relu(self.fc1(x))
         x = self.dropout(x)
@@ -78,18 +74,14 @@ def dataframe_to_torch(df):
     max_width = 0
     max_height = 0
 
-    # Iterate through the DataFrame rows
     for index, row in df.iterrows():
-        # Convert the PIL image to a tensor
         image_tensor = transform(row['image'])
 
         max_width = max(max_width, image_tensor.shape[2])
         max_height = max(max_width, image_tensor.shape[1])
 
-        # Append the tensor to the list of images
         images.append(image_tensor)
 
-        # Assuming 'edge_indicator', 'alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations' are your labels
         label_tensor = torch.tensor([
             row['SCALAR_DIFFERENCE'],
             row['EUCLIDEAN_DISTANCE'],
@@ -101,22 +93,18 @@ def dataframe_to_torch(df):
             row['outer_iterations']
         ])
 
-        # Append the label tensor to the list of labels
         labels.append(label_tensor)
 
     padded_images = []
     for image_tensor in images:
-        # Calculate padding lengths for each dimension
         pad_width = max_width - image_tensor.shape[2]
         pad_height = max_height - image_tensor.shape[1]
 
-        # Ensure padding lengths are divisible by 2
         pad_width_left = pad_width // 2
         pad_width_right = pad_width - pad_width_left
         pad_height_top = pad_height // 2
         pad_height_bottom = pad_height - pad_height_top
 
-        # Pad the image tensor
         padded_image = torch.nn.functional.pad(
             image_tensor,
             (pad_width_left, pad_width_right, pad_height_top, pad_height_bottom)
@@ -128,7 +116,6 @@ def dataframe_to_torch(df):
     print(max_height)
     images_stack = torch.stack(padded_images)
     labels_stack = torch.stack(labels)
-    # Stack the list of tensors to create a single tensor for images and labels
     return images_stack, labels_stack
 
 
@@ -140,18 +127,14 @@ train_dataset = df[0:68]
 train_data, train_labels = dataframe_to_torch(train_dataset)
 
 batch_size = 1
-num_epochs = 3
+num_epochs = 1
 
-# Which loss function to use?
 loss_function = nn.MSELoss()
 
-
-# Train your model
-# 1 classification parameter whilst the others are regression parameters, so make sure that the edge indicator is solved with bce
-# Or should I round it?
-# Or should I develop a separate model for it?
 kf = KFold(n_splits=10, shuffle=True)
-performance_metrics = []
+
+total_mse = []
+indices_to_transform = [0, 1, 2]
 
 for train_index, val_index in kf.split(train_dataset):
     model = CNNModel()
@@ -183,7 +166,6 @@ for train_index, val_index in kf.split(train_dataset):
 
         scheduler.step()
 
-
     with torch.no_grad():
         total_loss = 0
         total_samples = 0
@@ -191,20 +173,21 @@ for train_index, val_index in kf.split(train_dataset):
         for batch in test_loader:
             images, labels = batch
             predicted_labels = model(images)
-            print("predicted")
-            print(predicted_labels)
 
-            loss = loss_function(predicted_labels, labels)
+            for row in predicted_labels:
+                max_index = np.argmax(row[indices_to_transform])
+                row[indices_to_transform] = 0
+                row[indices_to_transform[max_index]] = 1
 
-            total_loss += loss.item() * images.size(0)
-            total_samples += images.size(0)
+            mse = mean_squared_error(predicted_labels, labels)
 
-    average_loss = total_loss / total_samples
-    print("Average loss: ", average_loss)
+            total_mse.append(mse)
 
-    performance_metrics.append(average_loss)
 
-print(performance_metrics)
+print(sum(total_mse) / len(total_mse))
+print(np.var(total_mse))
+
+
 
 
 
