@@ -3,19 +3,27 @@ from PIL import Image
 import numpy as np
 import cv2
 from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
+import gc
+import torch
 
 name = "dog-1"
-nb = 1
-
+nb = 5
 
 input_image = Image.open("../database/all_imgs/" + name + ".jpeg")
 
 feature_extractor = MaskFormerFeatureExtractor.from_pretrained("facebook/maskformer-swin-base-coco")
 model = MaskFormerForInstanceSegmentation.from_pretrained("facebook/maskformer-swin-base-coco")
 
+gc.collect()
+
 inputs = feature_extractor(images=input_image, return_tensors="pt")
 
-outputs = model(**inputs)
+with torch.no_grad():
+    outputs = model(**inputs)
+
+del model
+
+gc.collect()
 # model predicts class_queries_logits of shape `(batch_size, num_queries)`
 # and masks_queries_logits of shape `(batch_size, num_queries, height, width)`
 class_queries_logits = outputs.class_queries_logits
@@ -24,6 +32,10 @@ masks_queries_logits = outputs.masks_queries_logits
 # you can pass them to feature_extractor for postprocessing
 result = feature_extractor.post_process_panoptic_segmentation(outputs, target_sizes=[input_image.size[::-1]])[0]
 # we refer to the demo notebooks for visualization (see "Resources" section in the MaskFormer docs)
+
+del feature_extractor
+gc.collect()
+
 numpy_semantic_map = result["segmentation"].numpy()
 
 all_elements = set()

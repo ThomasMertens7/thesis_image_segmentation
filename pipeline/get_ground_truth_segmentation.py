@@ -2,6 +2,7 @@ from PIL import Image
 from transformers import MaskFormerFeatureExtractor, MaskFormerForInstanceSegmentation
 import numpy as np
 import gc
+import torch
 
 
 def get_ground_truth_segmentation(name):
@@ -13,7 +14,8 @@ def get_ground_truth_segmentation(name):
 
     inputs = feature_extractor(images=input_image, return_tensors="pt")
 
-    outputs = model(**inputs)
+    with torch.no_grad():
+        outputs = model(**inputs)
 
     del model
     gc.collect()

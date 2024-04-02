@@ -54,7 +54,7 @@ def preprocessing_filter(filter_name):
 
 
 def preprocessing():
-    excel_file_path = '../pipeline/latest_data.xlsx'
+    excel_file_path = 'old_data.xlsx'
     df = pd.read_excel(excel_file_path)
 
     condition = df['difficulty'] == 'easy'

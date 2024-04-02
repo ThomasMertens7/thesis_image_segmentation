@@ -11,18 +11,20 @@ import gc
 def get_precision():
     df = pd.read_excel('latest_data.xlsx')
 
-    for index, row in df.iterrows():
-        image_path = '../database/all_imgs/' + row['image'] + '.jpeg'
+    row = df.iloc[200]
 
-        execute(image_path, literal_eval(row['initial_contour']), row['inner_iterations'], row['outer_iterations'],
-                row['lambda'], row['alpha'], 1.5, row['sigma'], PotentialFunction.DOUBLE_WELL,
-                EdgeIndicator.from_string(row['edge_indicator']), 100)
+    image_path = '../database/all_imgs/' + row['image'] + '.jpeg'
 
-        precision = perceptual_difference_unit('/Users/thomasmertens/Desktop/thesis/git_code'
+    execute(image_path, literal_eval(row['initial_contour']), row['inner_iterations'], row['outer_iterations'],
+            row['lambda'], row['alpha'], 1.5, row['sigma'], PotentialFunction.DOUBLE_WELL,
+            EdgeIndicator.from_string(row['edge_indicator']), row['num_points'])
+
+    precision = perceptual_difference_unit('/Users/thomasmertens/Desktop/thesis/git_code'
                                                '/try_out_segment_algorithms/' +
                                                row['image'] + '.npy','prediction.npy')
-        print(precision)
-        gc.collect()
+    print(precision)
+    print(image_path)
+    gc.collect()
 
 
 get_precision()

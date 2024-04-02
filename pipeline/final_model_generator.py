@@ -1,8 +1,9 @@
-from pipeline.preprocessing import preprocessing
+from preprocessing import preprocessing
 from transformers import ViTMSNModel, AutoImageProcessor
 import torch
 import xgboost as xgb
 import pandas as pd
+
 
 def renew_model():
     processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
@@ -34,14 +35,15 @@ def renew_model():
             row['sigma'],
             row['lambda'],
             row['inner_iterations'],
-            row['outer_iterations']
+            row['outer_iterations'],
+            row['num_points']
         ])
 
     hidden_representations_lists = [tensor.tolist() for tensor in hidden_representations]
     X = pd.DataFrame(hidden_representations_lists)
 
     y = pd.DataFrame(labels, columns=['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
-                             'lambda', 'inner_iterations', 'outer_iterations'])
+                             'lambda', 'inner_iterations', 'outer_iterations', 'num_points'])
 
     model = xgb.XGBRegressor(objective='reg:squarederror')
 

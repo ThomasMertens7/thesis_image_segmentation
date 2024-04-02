@@ -68,6 +68,3 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
             np.save('prediction.npy', return_contour_npy)
             #np.save('../try_out_segment_algorithms/array_data2.csv', return_contour_npy)
             return None
-
-
-

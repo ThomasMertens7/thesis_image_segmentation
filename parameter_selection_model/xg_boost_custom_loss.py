@@ -1,17 +1,29 @@
-from transformers import AutoImageProcessor, ViTMSNModel, ResNetModel, ViTModel, ViTMAEModel, ImageGPTConfig, \
-    ImageGPTModel
-import torch
-from preprocessing import preprocessing
-import pandas as pd
 import xgboost as xgb
-from sklearn.metrics import mean_squared_error
 import numpy as np
-from sklearn.model_selection import KFold
+import pandas as pd
+from transformers import AutoImageProcessor, ViTMSNModel
+import torch
 import torch.nn as nn
-import time
+from preprocessing import  preprocessing
 
 
-t1 = time.time()
+# Custom loss function (squared loss for simplicity)
+def custom_loss(preds, dtrain):
+    labels = dtrain.get_label()
+    nested_labels = [labels[i:i + 8] for i in range(0, len(labels), 8)]
+
+    diff = preds - nested_labels
+
+    weights = np.array([1, 1, 1, 4, 5, 6, 7, 8])  # Placeholder for custom weights
+
+    weighted_diff = diff * weights
+    # Assuming weights are based on some logic related to labels or features
+    grad = 2 * weighted_diff # Gradient
+    hess = 2 * np.ones_like(preds) * weights  # Hessian
+
+    return grad.flatten(), hess.flatten()
+
+
 processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
 model = ViTMSNModel.from_pretrained("facebook/vit-msn-base")
 
@@ -52,32 +64,20 @@ X = pd.DataFrame(hidden_representations_lists)
 y = pd.DataFrame(labels, columns=['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
                          'lambda', 'inner_iterations', 'outer_iterations'])
 
-kf = KFold(n_splits=10, shuffle=True)
 
-total_mse = list()
-indices_to_transform = [0, 1, 2]
+# Example loading data
+# X_train, y_train should be your data and labels respectively
 
-for train_index, val_index in kf.split(X, y=y):
-    model = xgb.XGBRegressor(eta=0.1, objective='reg:squarederror')
+X_train, X_val = X.iloc[0:61], X.iloc[61:]
+y_train, y_val = y.iloc[0:61], y.iloc[61:]
 
-    X_train, X_val = X.iloc[train_index], X.iloc[val_index]
-    y_train, y_val = y.iloc[train_index], y.iloc[val_index]
+dtrain = xgb.DMatrix(X_train.to_numpy(), label=y_train.to_numpy())
 
-    model.fit(X_train, y_train)
+params = {
+    'max_depth': 3,
+    'eta': 0.1,
+    'silent': 1,
+    'objective': 'reg:squarederror'
+}
 
-    y_pred = model.predict(X_val)
-
-    for row in y_pred:
-        max_index = np.argmax(row[indices_to_transform])
-        row[indices_to_transform] = 0
-        row[indices_to_transform[max_index]] = 1
-    print("finished split")
-
-    mse = mean_squared_error(y_val, y_pred)
-    print(mse)
-    total_mse.append(mse)
-
-print(sum(total_mse) / len(total_mse))
-print(np.var(total_mse))
-t2 = time.time()
-print(t2 - t1)
+model = xgb.train(params, dtrain, num_boost_round=10, obj=custom_loss)

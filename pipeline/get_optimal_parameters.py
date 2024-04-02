@@ -2,15 +2,13 @@ import pandas as pd
 from safetensors import torch
 from transformers import AutoImageProcessor, ViTMSNModel
 import xgboost as xgb
-from PIL import Image
 import torch
 from geomeansegmentation.image_segmentation.drlse_segmentation import EdgeIndicator
 from parameter_selection_model.preprocessing import preprocessing, preprocessing_filter
 from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
-from examples.execute_example import execute
 import numpy as np
-import tensorflow as tf
 import gc
+
 
 def check_string_in_excel_column(file_path, column_name, string_to_check):
     df = pd.read_excel(file_path, engine='openpyxl')
@@ -54,14 +52,15 @@ def get_optimal_parameters(image, image_name):
                 row['sigma'],
                 row['lambda'],
                 row['inner_iterations'],
-                row['outer_iterations']
+                row['outer_iterations'],
+                row['num_points']
             ])
 
         hidden_representations_lists = [tensor.tolist() for tensor in hidden_representations]
         X = pd.DataFrame(hidden_representations_lists)
         y = pd.DataFrame(labels,
                              columns=['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
-                                      'lambda', 'inner_iterations', 'outer_iterations'])
+                                      'lambda', 'inner_iterations', 'outer_iterations', 'num_points'])
 
         model = xgb.XGBRegressor(objective='reg:squarederror')
 
@@ -108,6 +107,7 @@ def get_optimal_parameters(image, image_name):
     lmbda = image_parameters[5]
     iter_inner = image_parameters[6]
     iter_outer = image_parameters[7]
+    num_points = image_parameters[8]
 
-    return bounding_box, int(iter_inner), int(iter_outer), lmbda, alpha, sigma, edge_indicator
+    return bounding_box, int(iter_inner), int(iter_outer), lmbda, alpha, sigma, edge_indicator, int(num_points)
 

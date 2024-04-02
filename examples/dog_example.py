@@ -88,4 +88,5 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
 
 if __name__ == "__main__":
-        execute("../database/all_imgs/horse-50.jpeg", [[64, 399, 249, 532]], 15, 30, 1.875, 6.875, 1.5, 6.875, PotentialFunction.DOUBLE_WELL, EdgeIndicator.EUCLIDEAN_DISTANCE, 100)
+        execute("../database/all_imgs/cow-7.jpeg", [[66, 403, 40, 478]], 15, 30, 3.5, 9.5, 1.5, 3.125, PotentialFunction.DOUBLE_WELL,
+        EdgeIndicator.EUCLIDEAN_DISTANCE, 100)
