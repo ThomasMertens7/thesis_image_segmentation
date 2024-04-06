@@ -2,26 +2,24 @@ from sklearn.preprocessing import StandardScaler
 from transformers import AutoImageProcessor, ViTMSNModel, ResNetModel, ViTModel
 from diffusers import AutoencoderKL
 import torch
-from preprocessing import preprocessing
+from preprocessing import preprocessing, get_mean_and_var, normalize_list, preprocessing_newer, get_groups
 import pandas as pd
 import xgboost as xgb
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.decomposition import PCA
 import numpy as np
-from sklearn.model_selection import KFold
+from sklearn.model_selection import KFold, GroupKFold
 import time
 
 t1 = time.time()
 
-processor = AutoImageProcessor.from_pretrained("facebook/vit-mae-base")
-model = ViTMSNModel.from_pretrained("facebook/vit-mae-base")
+processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
+model = ViTMSNModel.from_pretrained("facebook/vit-msn-base")
 
-df = preprocessing()
+df = preprocessing_newer()
 
 hidden_representations = []
 labels = []
-
-pca = PCA(n_components=1)
 
 for i, row in df.iterrows():
     inputs = processor(images=row['image'], return_tensors="pt")
@@ -43,7 +41,8 @@ for i, row in df.iterrows():
         row['sigma'],
         row['lambda'],
         row['inner_iterations'],
-        row['outer_iterations']
+        row['outer_iterations'],
+        row['num_points']
     ])
 
 hidden_representations_lists = [tensor.tolist() for tensor in hidden_representations]
@@ -55,21 +54,22 @@ pca = PCA(n_components=67)
 
 X_pca = pca.fit_transform(X_scaled)
 
-
-
 X = pd.DataFrame(X_pca)
 
+groups = get_groups(df)
 
 y = pd.DataFrame(labels, columns=['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
-                         'lambda', 'inner_iterations', 'outer_iterations'])
+                         'lambda', 'inner_iterations', 'outer_iterations', 'num_points'])
 
 model = xgb.XGBRegressor(objective='reg:squarederror')
-kf = KFold(n_splits=10, shuffle=True)
+kf = GroupKFold(n_splits=10)
 
 total_mse = list()
 indices_to_transform = [0, 1, 2]
 
-for train_index, val_index in kf.split(X, y=y):
+for train_index, val_index in kf.split(X, y=y, groups=groups):
+    print(train_index)
+    print(val_index)
     X_train, X_val = X.iloc[train_index], X.iloc[val_index]
     y_train, y_val = y.iloc[train_index], y.iloc[val_index]
 
@@ -81,9 +81,10 @@ for train_index, val_index in kf.split(X, y=y):
         max_index = np.argmax(row[indices_to_transform])
         row[indices_to_transform] = 0
         row[indices_to_transform[max_index]] = 1
-    print("Finished split")
 
-    mse = mean_squared_error(y_val, y_pred)
+    mse = mean_absolute_error(y_val, y_pred)
+    total_mse.append(mse)
+
     total_mse.append(mse)
 
 print(sum(total_mse) / len(total_mse))

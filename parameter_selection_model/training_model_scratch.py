@@ -5,10 +5,12 @@ from torch.utils.data import DataLoader, TensorDataset
 import torch
 from torchvision import transforms
 from sklearn.model_selection import KFold
-from preprocessing import preprocessing
+from preprocessing import preprocessing, get_mean_and_var, normalize_list
 import numpy as np
 import torch.nn.functional as F
 from sklearn.metrics import mean_squared_error
+import time
+import pandas as pd
 
 
 class CNNModel(nn.Module):
@@ -22,7 +24,7 @@ class CNNModel(nn.Module):
 
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.fc1 = nn.Linear(64 * 80 * 80, 512)
+        self.fc1 = nn.Linear(40 * 40 * 128, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 128)
         self.fc4 = nn.Linear(128, 8)
@@ -44,23 +46,18 @@ class CNNModel(nn.Module):
         # 160 x 160 x 64
         x = self.pool(x)
         # 80 x 80 x 64
-        """
         x = F.relu(self.conv4(x))  # New convolutional layer
         # 80 x 80 x 128
         x = self.pool(x)
         # 40 x 40 x 128
-        """
 
         # Reshapes to long vector
-        x = x.view(-1, 64 * 80 * 80)
+        x = x.view(-1, 40 * 40 * 128)
 
         x = F.relu(self.fc1(x))
-        x = self.dropout(x)
         x = F.relu(self.fc2(x))
-        x = self.dropout(x)
         x = F.relu(self.fc3(x))
-        x = self.dropout(x)
-        x = self.fc4(x)
+        x = F.relu(self.fc4(x))
 
         return x
 
@@ -118,8 +115,19 @@ def dataframe_to_torch(df):
     labels_stack = torch.stack(labels)
     return images_stack, labels_stack
 
+t1 = time.time()
 
 df = preprocessing()
+
+# Assuming 'df' is your DataFrame and 'columns_to_scale' is a list of columns you want to z-scale
+columns_to_scale = ['column1', 'column2', 'column3']
+
+# Calculate mean and standard deviation for each column to scale
+mean_values = df[columns_to_scale].mean()
+std_values = df[columns_to_scale].std()
+
+# Z-scale the selected columns
+df[columns_to_scale] = (df[columns_to_scale] - mean_values) / std_values
 
 transform = transforms.ToTensor()
 
@@ -138,8 +146,8 @@ indices_to_transform = [0, 1, 2]
 
 for train_index, val_index in kf.split(train_dataset):
     model = CNNModel()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-    scheduler = StepLR(optimizer, step_size=1, gamma=0.5)  # Reduce LR by a factor of 0.1 every 5 epochs
+    optimizer = optim.AdamW(model.parameters(), lr=0.001)
+    scheduler = StepLR(optimizer, step_size=1, gamma=0.75)  # Reduce LR by a factor of 0.1 every 5 epochs
 
     X_train, X_val = train_data[train_index], train_data[val_index]
     y_train, y_val = train_labels[train_index], train_labels[val_index]
@@ -165,6 +173,8 @@ for train_index, val_index in kf.split(train_dataset):
             running_loss += loss.item()
 
         scheduler.step()
+    t2 = time.time()
+    print(t2-t1)
 
     with torch.no_grad():
         total_loss = 0
@@ -179,13 +189,21 @@ for train_index, val_index in kf.split(train_dataset):
                 row[indices_to_transform] = 0
                 row[indices_to_transform[max_index]] = 1
 
-            mse = mean_squared_error(predicted_labels, labels)
+            stats = get_mean_and_var(pd.DataFrame(y_train.numpy(),
+                                                  columns=["GEODESIC_DISTANCE", "EUCLIDEAN_DISTANCE",
+                                                           "SCALAR_DIFFERENCE", "alpha", "sigma", "lambda",
+                                                           "inner_iterations", "outer_iterations"]))
 
+            mse = mean_squared_error(normalize_list(labels.numpy().tolist(), stats),
+                                     normalize_list(predicted_labels.numpy().tolist(), stats))
+
+            print(mse)
             total_mse.append(mse)
 
-
+t2 = time.time()
 print(sum(total_mse) / len(total_mse))
 print(np.var(total_mse))
+print(t2 - t1)
 
 
 

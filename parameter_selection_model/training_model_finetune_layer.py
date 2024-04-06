@@ -2,34 +2,37 @@ from torch.optim.lr_scheduler import StepLR
 from transformers import AutoImageProcessor, ResNetModel, ViTMSNModel
 import torch
 import torch.nn as nn
-from preprocessing import preprocessing
+from preprocessing import preprocessing, get_mean_and_var, normalize_list, get_groups, preprocessing_newer_no_scaling
 from torch.utils.data import DataLoader, TensorDataset
-from sklearn.model_selection import KFold
-from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import KFold, GroupKFold
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 import numpy as np
 import time
+import torch.nn.functional as F
+import pandas as pd
 
 t1 = time.time()
+
 
 class CNNModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc1 = nn.Linear(75648, 256)
-        self.fc2 = nn.Linear(256, 8)
+        self.fc2 = nn.Linear(256, 9)
 
     def forward(self, x):
         # Formula for dimensions = (input_size - kernel_size + 2 x padding) / stride + 1
         # 512 x 7 x 7
         x = x.view(-1)
-        x = self.fc1(x)
-        x = self.fc2(x)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         return x
 
 
 processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
 model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
 
-df = preprocessing()
+df = preprocessing_newer_no_scaling()
 
 hidden_representations = []
 labels = []
@@ -51,7 +54,8 @@ for i, row in df.iterrows():
         row['sigma'],
         row['lambda'],
         row['inner_iterations'],
-        row['outer_iterations']
+        row['outer_iterations'],
+        row['num_points']
     ]))
 
 train_data, train_labels = torch.stack(hidden_representations), torch.stack(labels)
@@ -61,12 +65,14 @@ num_epochs = 20
 
 criterion = nn.MSELoss()
 
-kf = KFold(n_splits=10, shuffle=True)
+kf = GroupKFold(n_splits=10)
+
+groups = get_groups(df)
 
 total_mse = []
 indices_to_transform = [0, 1, 2]
 
-for train_index, val_index in kf.split(train_data):
+for train_index, val_index in kf.split(train_data, groups=groups):
     model = CNNModel()
     optimizer = torch.optim.AdamW(model.parameters(), lr=0.0001)
     scheduler = StepLR(optimizer, step_size=1, gamma=0.75)
@@ -85,13 +91,11 @@ for train_index, val_index in kf.split(train_data):
         for inputs, labels in train_loader:
             optimizer.zero_grad()
             outputs = model(inputs)
-            loss = criterion(outputs, labels)
+            loss = criterion(outputs, labels[0])
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
 
-        print(outputs)
-        print(f"Epoch {epoch + 1}, Loss: {running_loss / len(train_loader)}")
         scheduler.step()
 
     with torch.no_grad():
@@ -106,7 +110,10 @@ for train_index, val_index in kf.split(train_data):
             predicted_labels[indices_to_transform] = 0
             predicted_labels[indices_to_transform[max_index]] = 1
 
-            mse = mean_squared_error(predicted_labels, labels[0])
+            mse = mean_absolute_error(predicted_labels, labels[0])
+            print(labels)
+            print(predicted_labels)
+            print(mse)
 
             total_mse.append(mse)
 
