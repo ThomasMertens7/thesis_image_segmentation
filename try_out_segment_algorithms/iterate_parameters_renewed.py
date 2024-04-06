@@ -2,12 +2,14 @@ from examples.execute_example import execute
 from geomeansegmentation.image_segmentation.drlse_segmentation import PotentialFunction, EdgeIndicator
 from hamming_distance import hamming_distance
 from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
+import logging
 
 
 def parameter_search(file_name, level=0):
     highest_prec = 0
     path = "../database/all_imgs/" + file_name + ".jpeg"
 
+    # bounding_box = [[26, 348, 291, 571]]
     bounding_box = get_initial_contour(path)
     diffs = [None, None, None, None, None, None]
 
@@ -64,7 +66,6 @@ def parameter_search(file_name, level=0):
             if edge_indicator == EdgeIndicator.GEODESIC_DISTANCE:
 
                 if diffs[5] is None:
-                    alpha = 3
                     diffs[5] = 25
 
                 execute(path, bounding_box, 15, 30, 3, 3, 1.5, 3, PotentialFunction.DOUBLE_WELL,
@@ -90,6 +91,9 @@ def parameter_search(file_name, level=0):
 
                 diffs[5] = int(diffs[5] / 2)
                 print("Amount of points: " + str(amount_of_points))
+
+            else:
+                level = 2
 
         # Determine optimal value of alpha
         elif level == 2:
@@ -117,6 +121,7 @@ def parameter_search(file_name, level=0):
 
             if diffs[0] <= 0.25:
                 level = 3
+
 
             diffs[0] = diffs[0] / 2
 
@@ -203,11 +208,12 @@ def parameter_search(file_name, level=0):
             highest_prec = max(highest_prec, prec1, prec2, prec3)
 
             if prec1 >= prec2 and prec1 >= prec3:
-                outer_iter = outer_iter
+                inner_iter = inner_iter
             elif prec2 >= prec1 and prec2 >= prec3:
-                outer_iter = outer_iter + diffs[3]
+                inner_iter = inner_iter + diffs[3]
             else:
-                outer_iter = outer_iter - diffs[3]
+                inner_iter = (inner_iter
+                              - diffs[3])
             if diffs[3] <= 2:
                 level = 6
 
@@ -224,10 +230,10 @@ def parameter_search(file_name, level=0):
             execute(path, bounding_box, inner_iter, outer_iter, lmbda, alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec1 = hamming_distance(file_name + ".npy", "segmented.npy")
-            execute(path, bounding_box, inner_iter, outer_iter, lmbda + diffs[2], alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
+            execute(path, bounding_box, inner_iter, outer_iter, lmbda + diffs[4], alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec2 = hamming_distance(file_name + ".npy", "segmented.npy")
-            execute(path, bounding_box, inner_iter, outer_iter, lmbda - diffs[2], alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
+            execute(path, bounding_box, inner_iter, outer_iter, lmbda - diffs[4], alpha, 1.5, sigma, PotentialFunction.DOUBLE_WELL,
                     edge_indicator, amount_of_points)
             prec3 = hamming_distance(file_name + ".npy", "segmented.npy")
             highest_prec = max(highest_prec, prec1, prec2, prec3)
@@ -235,14 +241,14 @@ def parameter_search(file_name, level=0):
             if prec1 >= prec2 and prec1 >= prec3:
                 lmbda = lmbda
             elif prec2 >= prec1 and prec2 >= prec3:
-                lmbda = lmbda + diffs[2]
+                lmbda = lmbda + diffs[4]
             else:
-                lmbda = lmbda - diffs[2]
+                lmbda = lmbda - diffs[4]
 
-            if diffs[2] <= 0.25:
+            if diffs[4] <= 0.25:
                 level = 7
 
-            diffs[2] = diffs[2] / 2
+            diffs[4] = diffs[4] / 2
 
             print("Lambda: " + str(lmbda))
 
@@ -257,6 +263,10 @@ def parameter_search(file_name, level=0):
 
 
 
-for index in range(1, 51):
-    print(index)
-    parameter_search("dog-" + str(index), 0)
+
+for index in range(40, 51):
+    try:
+        print(index)
+        parameter_search("horse-" + str(index), 0)
+    except Exception as e:
+        logging.error(f"Unexpected error occurred for index {index}: {e}")

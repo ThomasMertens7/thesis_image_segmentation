@@ -40,29 +40,34 @@ for train_index, val_index in kf.split(df, groups=groups):
     predicted_parameters = train_data.mean()
 
     predicted_parameters = predicted_parameters[['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE',
-                                                 'alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations']]
+                                                 'alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations',
+                                                 'num_points']]
 
-    max_key = max(['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE'],
-                  key=lambda k: predicted_parameters[k])
+    #max_key = max(['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE'],
+    #              key=lambda k: predicted_parameters[k])
 
     # Set the key with the maximum value to 1, and the others to 0
-    for key in ['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE']:
-        predicted_parameters[key] = 1 if key == max_key else 0
+    #for key in ['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE']:
+    #    predicted_parameters[key] = 1 if key == max_key else 0
 
     for i1, row1 in test_data.iterrows():
 
         actual_parameters = row1[
             ['GEODESIC_DISTANCE', 'EUCLIDEAN_DISTANCE', 'SCALAR_DIFFERENCE', 'alpha',
-             'sigma', 'lambda', 'inner_iterations', 'outer_iterations']]
+             'sigma', 'lambda', 'inner_iterations', 'outer_iterations', 'num_points']]
 
         mse = mean_squared_error(predicted_parameters.tolist(), list(actual_parameters))
         abs = mean_absolute_error(predicted_parameters.tolist(), list(actual_parameters))
-        print(np.var(list(actual_parameters)))
-        total_mse.append(abs)
+        print("new results")
+        print(predicted_parameters.tolist())
+        print(list(actual_parameters))
+        print(abs)
+    total_mse.append(np.mean(abs))
 
 t2 = time.time()
 
 print(sum(total_mse) / len(total_mse))
+print(total_mse)
 print(np.var(total_mse))
 print(t2-t1)
 

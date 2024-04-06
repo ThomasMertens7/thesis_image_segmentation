@@ -12,8 +12,8 @@ import time
 
 
 t1 = time.time()
-processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
-model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
+processor = AutoImageProcessor.from_pretrained("microsoft/resnet-18")
+model = ViTMSNModel.from_pretrained("microsoft/resnet-18")
 
 df = preprocessing_newer()
 
@@ -68,16 +68,19 @@ for train_index, val_index in kf.split(X, y=y, groups=groups):
 
     y_pred = model.predict(X_val)
 
+    mse = mean_absolute_error(y_val, y_pred)
+    print(list(y_val.iloc[0]))
+    print(list(y_pred[0]))
+    print(mse)
+    total_mse.append(mse)
+
     for row in y_pred:
         max_index = np.argmax(row[indices_to_transform])
         row[indices_to_transform] = 0
         row[indices_to_transform[max_index]] = 1
     print("finished split")
 
-    mse = mean_absolute_error(y_val, y_pred)
 
-    print(mse)
-    total_mse.append(mse)
 
 print(sum(total_mse) / len(total_mse))
 print(np.var(total_mse))
