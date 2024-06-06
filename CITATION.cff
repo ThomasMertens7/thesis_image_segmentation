@@ -2,14 +2,14 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: 'matrix-geometric-mean-image-segmentation'
+title: 'unsupervised-image-segmentation-feedback-loop'
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
 type: software
 authors:
-  - given-names: Robbe
-    family-names: Ramon
+  - given-names: Thomas
+    family-names: Mertens
     affiliation: KU Leuven
   - given-names: Raf
     family-names: Vandebril
@@ -22,13 +22,16 @@ authors:
     affiliation: KU Leuven
     orcid: 'https://orcid.org/0000-0001-9560-3872'
 repository-code: >-
-  https://github.com/thesis-robbe-ramon-2023/matrix-geometric-mean-image-segmentation
+  https://github.com/ThomasMertens7/thesis_image_segmentation.git
 abstract: >-
   A Python package to calculate the matrix geometric mean
   and perform image segmentation using the matrix geometric
-  mean and level set evolution.
+  mean and level set evolution. With additional packages
+  supplementing to model the optimal input arguments for the model
 keywords:
   - image segmentation
   - matrix geometric mean
   - level set evolution
+  - machine learning
+  - feedback loop
 license: MIT

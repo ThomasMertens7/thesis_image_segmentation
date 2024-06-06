@@ -3,9 +3,9 @@ from safetensors import torch
 from transformers import AutoImageProcessor, ViTMSNModel
 import xgboost as xgb
 import torch
-from geomeansegmentation.image_segmentation.drlse_segmentation import EdgeIndicator
+from RAMON_geomeansegmentation.image_segmentation.drlse_segmentation import EdgeIndicator
 from parameter_selection_model.preprocessing import preprocessing, preprocessing_filter
-from segmentinitialcontour.segment_initial_countour_train import get_initial_contour
+from RAMON_segmentinitialcontour.segment_initial_countour_train import get_initial_contour
 import numpy as np
 import gc
 
@@ -20,11 +20,10 @@ def check_string_in_excel_column(file_path, column_name, string_to_check):
         return False
 
 
-def get_optimal_parameters(image, image_name):
+def get_optimal_parameters(image, image_name, model=None):
     processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
     msn_model = ViTMSNModel.from_pretrained("facebook/vit-msn-base")
 
-    model = None
     if check_string_in_excel_column("latest_data.xlsx", "image", image_name):
         df = preprocessing_filter(image_name)
 

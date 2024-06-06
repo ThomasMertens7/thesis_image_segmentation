@@ -6,7 +6,6 @@ import statistics
 import numpy as np
 
 
-
 def get_groups(df):
     all_tensors = []
     all_indexes = []
@@ -23,6 +22,7 @@ def get_groups(df):
             all_indexes.append(new_index)
 
     return np.array(all_indexes)
+
 
 def get_mean_and_var(df):
     alpha_mean = statistics.mean(list(df["alpha"]))
@@ -59,10 +59,10 @@ def normalize_list(lst, stats):
     return lst
 
 
-
 def read_image(file_name):
     image = Image.open('../database/all_imgs/' + file_name + '.jpeg')
     return image
+
 
 def update_df_with_images(df):
     image_data = []
@@ -153,15 +153,53 @@ def preprocessing_newer():
     return df_with_images
 
 
-def preprocessing_newer_no_scaling():
+def preprocessing_features_newer():
     excel_file_path = 'latest_data.xlsx'
     df = pd.read_excel(excel_file_path)
 
     condition = df['predicted_diff'] == 'Easy'
     filtered_rows_df = df[condition]
 
-    # Do I include the initial_contour? Or should I use the previously made model for determining the box?
-    # Do I include the precision?
+    df = filtered_rows_df.reset_index(drop=True).sample(frac=1).reset_index(drop=True)
+
+    groups = get_groups(df)
+
+    df = update_df_with_images(df)
+
+    df["width"] = df["image"].apply(lambda x: x.size[0])
+    df["height"] = df["image"].apply(lambda x: x.size[1])
+
+    df["SCALAR_DIFFERENCE"] = df["edge_indicator"] \
+        .apply(lambda x: 1 if "EdgeIndicator.SCALAR_DIFFERENCE" in x else 0)
+    df["EUCLIDEAN_DISTANCE"] = df["edge_indicator"] \
+        .apply(lambda x: 1 if "EdgeIndicator.EUCLIDEAN_DISTANCE" in x else 0)
+    df["GEODESIC_DISTANCE"] = df["edge_indicator"] \
+        .apply(lambda x: 1 if "EdgeIndicator.GEODESIC_DISTANCE" in x else 0)
+
+    label_encoder = LabelEncoder()
+
+    df['animal'] = label_encoder.fit_transform(df['animal'])
+    df['pose'] = label_encoder.fit_transform(df['pose'])
+    df['direction'] = label_encoder.fit_transform(df['direction'])
+    df['coverage'] = label_encoder.fit_transform(df['coverage'])
+
+    scaler = MinMaxScaler()
+    scaler.fit(df[['alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations', 'num_points']])
+    df[['alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations', 'num_points']] = scaler.transform(
+        df[['alpha', 'sigma', 'lambda', 'inner_iterations', 'outer_iterations', 'num_points']])
+
+    column_features = ['width', 'height', 'animal', 'pose', 'direction', 'coverage', 'brightness', 'color_variety']
+    column_labels = ['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
+                         'lambda', 'inner_iterations', 'outer_iterations', 'num_points']
+    return df[column_features], df[column_labels], groups
+
+
+def preprocessing_newer_no_scaling():
+    excel_file_path = 'latest_data.xlsx'
+    df = pd.read_excel(excel_file_path)
+
+    condition = df['predicted_diff'] == 'Easy'
+    filtered_rows_df = df[condition]
 
     df_without_index = filtered_rows_df.reset_index(drop=True)
 
@@ -178,22 +216,11 @@ def preprocessing_newer_no_scaling():
                          'lambda', 'inner_iterations', 'outer_iterations', 'num_points']
     df_with_images = df_with_images[columns_to_select]
 
-    """
-    mean_values = df_with_images[columns_to_scale].mean()
-    std_values = df_with_images[columns_to_scale].std()
-
-    print(mean_values)
-    print(std_values)
-
-    df_with_images[columns_to_scale] = (df_with_images[columns_to_scale] - mean_values) / std_values
-    print(df_with_images[columns_to_scale])
-    """
-
     return df_with_images
 
 
 def preprocessing():
-    excel_file_path = 'old_newer_data.xlsx'
+    excel_file_path = 'latest_data.xlsx'
     df = pd.read_excel(excel_file_path)
 
     condition = df['difficulty'] == 'easy'
@@ -269,8 +296,6 @@ def preprocessing_features():
     for val in df['direction']:
         values.add(val)
 
-
-
     df['animal'] = label_encoder.fit_transform(df['animal'])
     df['pose'] = label_encoder.fit_transform(df['pose'])
     df['direction'] = label_encoder.fit_transform(df['direction'])
@@ -287,7 +312,8 @@ def preprocessing_features():
     column_features = ['animal', 'pose', 'direction', 'coverage', 'brightness', 'color_variety']
     column_labels = ['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
                          'lambda', 'inner_iterations', 'outer_iterations']
-    return df[column_features], df[column_labels]
+    return df[column_features], df[column_labels], groups
+
 
 def preprocessing_with_animal():
     excel_file_path = '../pipeline/latest_data.xlsx'

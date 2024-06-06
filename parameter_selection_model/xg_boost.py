@@ -1,19 +1,19 @@
-from preprocessing import preprocessing_features
+from preprocessing import preprocessing_features, preprocessing_features_newer
 import xgboost as xgb
 import numpy as np
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import KFold
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.model_selection import KFold, GroupKFold
 import time
 
 t1 = time.time()
 
-X, y = preprocessing_features()
-kf = KFold(n_splits=10, shuffle=True)
+X, y, groups = preprocessing_features_newer()
+kf = GroupKFold(n_splits=10)
 
-total_mse = list()
+total_mae = list()
 indices_to_transform = [0, 1, 2]
 
-for train_index, val_index in kf.split(X, y=y):
+for train_index, val_index in kf.split(X, y=y, groups=groups):
     model = xgb.XGBRegressor(objective='reg:squarederror')
 
     X_train, X_val = X.iloc[train_index], X.iloc[val_index]
@@ -23,17 +23,15 @@ for train_index, val_index in kf.split(X, y=y):
 
     y_pred = model.predict(X_val)
 
-    for row in y_pred:
-        max_index = np.argmax(row[indices_to_transform])
-        row[indices_to_transform] = 0
-        row[indices_to_transform[max_index]] = 1
+    print(y_pred)
+    print(y_val)
 
-    mse = mean_squared_error(y_val, y_pred)
-    total_mse.append(mse)
+    mae = mean_absolute_error(y_val, y_pred)
+    total_mae.append(mae)
 
 t2 = time.time()
 
 
-print(sum(total_mse) / len(total_mse))
-print(np.var(total_mse))
+print(sum(total_mae) / len(total_mae))
+print(np.var(total_mae))
 print(t2 - t1)

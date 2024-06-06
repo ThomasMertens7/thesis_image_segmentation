@@ -6,13 +6,15 @@ import pandas as pd
 
 
 def renew_model():
-    processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-base")
-    model = ViTMSNModel.from_pretrained("facebook/vit-msn-base")
+    processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
+    model = ViTMSNModel.from_pretrained("facebook/vit-msn-small")
 
-    df = preprocessing()
+    df = preprocessing().sample(frac=1).reset_index(drop=True)
 
     hidden_representations = []
     labels = []
+    widths = []
+    heights = []
 
     for i, row in df.iterrows():
         inputs = processor(images=row['image'], return_tensors="pt")
@@ -22,6 +24,8 @@ def renew_model():
 
         last_hidden_states = outputs.last_hidden_state
         pooled_hidden_state = last_hidden_states
+        widths.append(row['image'].size[0])
+        heights.append(row['image'].size[1])
 
         flattened_tensor = pooled_hidden_state.view(-1)
 
@@ -40,7 +44,10 @@ def renew_model():
         ])
 
     hidden_representations_lists = [tensor.tolist() for tensor in hidden_representations]
+
     X = pd.DataFrame(hidden_representations_lists)
+    X["width"] = widths
+    X["height"] = heights
 
     y = pd.DataFrame(labels, columns=['SCALAR_DIFFERENCE', 'EUCLIDEAN_DISTANCE', 'GEODESIC_DISTANCE', 'alpha', 'sigma',
                              'lambda', 'inner_iterations', 'outer_iterations', 'num_points'])
