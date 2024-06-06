@@ -19,7 +19,7 @@ Released under MIT license
 
 import cv2
 from RAMON_geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, EdgeIndicator, construct_g
-from figure.show_figure import show_all, show_lsf, show_contour
+from RAMON_figure.show_figure import show_all, show_lsf, show_contour
 from segmentrecognition.image_recognition_recognize import recognize_animal
 
 
@@ -47,7 +47,7 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
     # Euclidean distance edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([80, 265, 80, 250])],
     #     iter_inner=15,
     #     iter_outer=70,
@@ -62,7 +62,7 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
     # Scalar difference edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([80, 265, 80, 250])],
     #     iter_inner=15,
     #     iter_outer=50,
@@ -97,4 +97,4 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
 
 if __name__ == "__main__":
-    execute("../img/butterfly-3.jpeg", [tuple([80, 265, 80, 250])], 15, 35, 2, 4, 1.5, 1, PotentialFunction.DOUBLE_WELL, EdgeIndicator.GEODESIC_DISTANCE, 100)
+    execute("../RAMON_img/butterfly-3.jpeg", [tuple([80, 265, 80, 250])], 15, 35, 2, 4, 1.5, 1, PotentialFunction.DOUBLE_WELL, EdgeIndicator.GEODESIC_DISTANCE, 100)

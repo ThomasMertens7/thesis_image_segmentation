@@ -1,0 +1,6 @@
+- **FINAL_MODEL_GENERATOR** a file that generates a model based on the latest data of predicted labels.
+- **GET_GROUND_TRUTH_SEGMENTATION** a file that prompts the color on the color map to select the object to segment.
+- **GET_OPTIMAL_PARAMETERS** a file to predict optimal parameters based on the latest trained available model.
+- **PERCEPTUAL_DIFFERENCE_UNIT** a file that calculates the distance between two segmentations according to the perceptual difference unit.
+- **PIPELINE** the main file to be executed which will select the best parameters based on the current model, execute segmentation, evaluate with ground truth, and give feedback to the database.
+- **PREPROCESSING** a file used to load images from the database together with the optimal labels.

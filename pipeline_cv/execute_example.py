@@ -3,7 +3,7 @@ import json
 import numpy as np
 import cv2
 from RAMON_geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, EdgeIndicator, construct_g
-from figure.show_figure import show_all, show_lsf, show_contour
+from RAMON_figure.show_figure import show_all, show_lsf, show_contour
 from segmentrecognition.image_recognition_recognize import recognize_animal
 from RAMON_examples.convert_contour import convert_to_0_1
 def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbda, alfa, epsilon, sigma, potential_function, edge_indicator, amount_of_points):
@@ -30,7 +30,7 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
     # Euclidean distance edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([80, 265, 80, 250])],
     #     iter_inner=15,
     #     iter_outer=70,
@@ -45,7 +45,7 @@ def execute(img_path, initial_countour_coordinates, iter_inner, iter_outer, lmbd
 
     # Scalar difference edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([80, 265, 80, 250])],
     #     iter_inner=15,
     #     iter_outer=50,

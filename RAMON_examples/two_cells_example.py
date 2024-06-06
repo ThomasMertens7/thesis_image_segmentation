@@ -20,11 +20,11 @@ Released under MIT license
 import cv2
 from RAMON_geomeansegmentation.image_segmentation.drlse_segmentation import perform_segmentation, PotentialFunction, \
     EdgeIndicator
-from figure.show_figure import show_all, show_lsf, show_contour
+from RAMON_figure.show_figure import show_all, show_lsf, show_contour
 
 
 def main():
-    img = cv2.imread("img/twocells.bmp")
+    img = cv2.imread("RAMON_img/twocells.bmp")
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     original_img = img
@@ -46,7 +46,7 @@ def main():
 
     # Scalar difference edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([9, 55, 9, 75])],
     #     iter_inner=5,
     #     iter_outer=90,
@@ -61,7 +61,7 @@ def main():
 
     # Euclidean distance edge indicator
     # seg = perform_segmentation(
-    #     image=img,
+    #     image=RAMON_img,
     #     initial_contours_coordinates=[tuple([9, 55, 9, 75])],
     #     iter_inner=5,
     #     iter_outer=100,

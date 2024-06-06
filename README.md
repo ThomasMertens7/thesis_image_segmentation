@@ -1,0 +1,5 @@
+- **DATABASE** contains all the images used to train a parameter selection model on, images from; dogs, sheeps, horses and cows. It also contains images of butterflies, since these wered used for some experiments. Additional to the images there are some util files to analyze images or edit them.
+- **PARAMETER_SELECTION_MODEL** contains all model training files, these are XGBoost, neural network and one-shot learner trainers based on images, hidden layer representations or manually selected features per image.
+- **PIPELINE** contains a pipeline of an executable version of the application, in wich the pipeline gives feedback to the parameter selection model such that these gradually improve theirselves.
+- **PIPELINE_CV** contains a cross-validation analysis on the segmentation parformance utilizing 'smart' parameters.
+- **PLOTS** contains scripts that were used to generate figures for the thesis.

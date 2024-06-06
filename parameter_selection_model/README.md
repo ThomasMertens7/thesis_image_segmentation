@@ -1,0 +1,9 @@
+- **AVERAGE_LABEL_LEARNING** is a file to evaluate the label selection performance of predicting the average parameters for every image.
+- **NEURAL_NETWORK_HIDDEN_LAYER** is a file that trains a neural network on a hidden layer representation of images.
+- **NEURAL_NETWORK_SCRATCH** is a file that trains a neural network on the raw image directly.
+- **ONE_SHOT_LEARNING** is a file that predicts parameters based on the x-closest points in the hidden layer space.
+- **PREPROCESSING** is a file to load the images and their corresponding labels.
+- **XG_BOOST** is a file that trains an XGBoost model on self-made features and predicts labels based on that model.
+- **XG_BOOST_hidden_layer** is a file that trains an XGBoost model on the hidden layers of images and predicts labels based on that model.
+- **XG_BOOST_hidden_layer_pca** is a file that trains an XGBoost model on the hidden layers of images + a PCA decomposition and predicts labels based on that model.
+- **XG_BOOST_hidden_layer_separate_labels** is a file that trains an XGBoost model on the hidden layers of images for each label separately and predicts labels based on that model.
